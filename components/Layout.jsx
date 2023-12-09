@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import NavBar from './Navbar/Navbar';
 import Versities from './Events/Versity';
 import Footer from './Footer/Footer';
+import FellowshipPage from './Fellowship/Fellowship';
 const Layout = () => {
 
   const [activeTab, setActiveTab] = useState('home');
@@ -14,7 +15,7 @@ const Layout = () => {
     switch (activeTab) {
     
       case 'fellowship':
-        return <div>Events Content Goes Here</div>;
+        return <FellowshipPage/>;
       case 'scholarship':
         return <div>Blog Content Goes Here</div>;
       case 'news':

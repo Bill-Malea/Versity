@@ -1,0 +1,20 @@
+/* eslint-disable @next/next/no-img-element */
+import React from 'react';
+
+const FellowshipCard = ({ fellowship }) => {
+  return (
+    <div className="bg-white p-4 rounded-lg shadow-md transition duration-300 transform hover:shadow-lg hover:-translate-y-1 cursor-pointer">
+      <img
+        src={fellowship.image}
+        alt={fellowship.title}
+        className="w-full h-36 object-cover mb-4 rounded-t-md"
+      />
+      <div>
+        <h3 className="text-lg font-semibold mb-2">{fellowship.title}</h3>
+        <p className="text-gray-800">{fellowship.description}</p>
+      </div>
+    </div>
+  );
+};
+
+export default FellowshipCard;

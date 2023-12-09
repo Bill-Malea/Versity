@@ -2,7 +2,7 @@ import React from 'react';
 
 const NavBar = ({ onTabClick, activeTab }) => {
   return (
-    <nav className="bg-black p-4 text-white fixed top-0 w-full shadow-md">
+    <nav className="bg-black p-4 text-white fixed top-0  z-50  w-full shadow-md">
       <div className="container mx-auto flex items-start">
 
         {/* Logo Placeholder */}
