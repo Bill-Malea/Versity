@@ -38,7 +38,7 @@ const FellowshipPage = () => {
   ];
 
   return (
-    <div className='mb-52 lg:mx-16'>
+    <div className=' lg:mx-16'>
       <h2 className="text-2xl font-semibold mb-4">Fellowship Programs</h2>
       <FellowshipList fellowships={fellowships} />
     </div>
