@@ -10,6 +10,7 @@ const Versities
       title: 'University of Nairobi ',
       location: 'Nairobi',
       image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMLqUgEpdIX9Uombald4iqt2Kf067a3nA_zIZb7Nb1XM-B0XNJsKh6wGNgCqmKBhF9tEc&usqp=CAU',
+
     },
     {
       title: 'University of Eldoret',
@@ -36,10 +37,9 @@ const Versities
   return (
     <div className="container ">
       <BannerSlider />
-      <div className="ml-10 mt-5">
-
-     
-      <h2 className="text-xl font-semibold mb-4">Universities</h2>
+      <div className="lg:ml-10 sm:ml mt-5">
+    
+      <h2 className="text-xl font-semibold lg:mb-4 sm:ml-4">Universities</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         { versityList.map((event, index) => (
           <VersityCard key={index} event={event} />

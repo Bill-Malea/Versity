@@ -3,7 +3,7 @@ import React from 'react';
 const VersityCard = ({ event }) => {
   return (
     <div className="bg-white p-4 rounded-lg cursor-pointer ">
-      <img src={event.image}  alt={event.title} className="sm:w-96 w-64 h-36 object-cover mb-4 rounded-md" />
+      <img src={event.image}  alt={event.title} className="sm:w-auto lg:w-64 h-36 object-cover mb-4 rounded-md" />
       <h3 className="text-sm font-semibold mb-2">{event.title}</h3>
        <div className="flex items-center mb-2">
            <svg
