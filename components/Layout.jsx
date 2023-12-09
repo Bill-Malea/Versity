@@ -5,6 +5,8 @@ import Footer from './Footer/Footer';
 import FellowshipPage from './Fellowship/Fellowship';
 import ScholarshipPage from './Scholarship/Scholarship';
 import NewsPage from './News/News';
+import BlogPage from './Blog/Blog';
+import BlogDescriptionPage from './Blog/components/BlogDescription';
 const Layout = () => {
 
   const [activeTab, setActiveTab] = useState('home');
@@ -23,9 +25,9 @@ const Layout = () => {
       case 'news':
         return <NewsPage/>;
       case 'blog':
-        return <div>About Content Goes Here</div>; 
+        return <BlogPage/>; 
       case 'about':
-        return <div>About Content Goes Here</div>;
+        return <BlogDescriptionPage/>;
       default :"university"
         return <Versities/>;
     }
@@ -34,7 +36,7 @@ const Layout = () => {
   return (
     <div>
       <NavBar onTabClick={handleTabClick} activeTab={activeTab} />
-      <div className="mt-20 mb-56">
+      <div className="mt-20 mb-56 lg">
         {renderContent()}
       </div>
       <Footer/>

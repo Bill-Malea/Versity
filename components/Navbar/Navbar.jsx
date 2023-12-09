@@ -1,12 +1,31 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
-
+import { useRouter } from 'next/router';
 const NavBar = ({ onTabClick, activeTab }) => {
+   const router = useRouter();
+
+  const handleUserIconClick = () => {
+      router.push('/login');
+      };
+
   return (
     <nav className="bg-black p-4 text-white fixed top-0  z-50  w-full shadow-md">
       <div className="container mx-auto flex items-start">
 
         {/* Logo Placeholder */}
         <div className="flex items-center">
+          <div className="cursor-pointer" onClick={handleUserIconClick}>
+  <img
+            src="assets/images/account.svg" 
+            alt="Account Icon"
+            className="w-6 h-6"
+          />
+
+
+
+
+
+        </div>
           <span className="text-2xl font-semibold">Your Logo</span>
         </div>
 
@@ -19,10 +38,21 @@ const NavBar = ({ onTabClick, activeTab }) => {
               onClick={() => onTabClick(tab)}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)} 
-              {activeTab === tab && <div className="active-tab-marker"></div>}
+              {activeTab === tab && <div className="active-tab-marker">
+                
+                
+                </div>}
             </button>
           ))}
+
+
+
+        
+        
+      
         </div>
+
+  
 
       </div>
     </nav>
