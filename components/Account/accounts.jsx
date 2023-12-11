@@ -5,11 +5,28 @@ import FellowshipTab from "./componets/FellowshipTab";
 import ScholarshipTab from "./componets/ScholarshipsTab";
 import NewsTab from "./componets/NewsTab";
 import BlogTab from "./componets/BlogTab";
+import { signOut } from "firebase/auth";
+import { auth } from "@/firebase";
+import { router } from "next/router";
 const AccountPage = () => {
   const [subTab, setSubTab] = useState("university");
-
+  const [loading, setLoading] = useState(false);
   const handleSubTabClick = (tab) => {
     setSubTab(tab);
+  };
+
+  const handleLogout = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    try {
+      await signOut(auth);
+
+      setLoading(false);
+      router.replace("/");
+    } catch (error) {
+      setError(`Error logging in: ${error.message}`);
+      setLoading(false);
+    }
   };
 
   return (
@@ -21,21 +38,36 @@ const AccountPage = () => {
             {" "}
             Welcome, <span className="text-l ">Bill</span>
           </h2>
-          <h2 className="text-l  flex flex-row cursor-pointer   ">
-            Log Out
-            <span className="ml-2 ">
+
+          {loading ? (
+            <div>
               <img
-                src="assets/images/logout.svg"
+                src="assets/images/loading.svg"
                 alt="Logout Icon"
-                className="w-4 h-4 mr-4"
+                className="animate-spin-slow h-7 w-7 mt-5"
                 onClick={null}
               />
-            </span>
-          </h2>
+            </div>
+          ) : (
+            <h2
+              className="text-l  flex flex-row cursor-pointer"
+              onClick={handleLogout}
+            >
+              Log Out
+              <span className="ml-2 ">
+                <img
+                  src="assets/images/logout.svg"
+                  alt="Logout Icon"
+                  className="w-4 h-4 mr-4"
+                  onClick={null}
+                />
+              </span>
+            </h2>
+          )}
         </div>
         <div className="flex flex-col lg:flex-row">
           <div className=" sm:flex-row sm:w-28 lg:w-60 text-left pr-4 mb-4 lg:mb-0 lg:mr-20">
-            <div className="mb-4 flex sm:flex-row lg:flex-col">
+            <div className="mb-4 flex sm:flex-row lg:flex-col text-left">
               {[
                 "university",
                 "fellowship",

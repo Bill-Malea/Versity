@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import { auth } from '@/firebase';
-
+/* eslint-disable @next/next/no-img-element */
+import React, { useState } from "react";
+import { auth } from "@/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { router } from "next/router";
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -12,11 +15,12 @@ const LoginPage = () => {
     try {
       // Input validation
       if (!email || !password) {
-        setError('Please fill in all fields.');
+        setError("Please fill in all fields.");
         return;
       }
-
-      await auth.signInWithEmailAndPassword(email, password);
+      setLoading(true);
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push("/account");
       // Redirect user upon successful login
     } catch (error) {
       setError(`Error logging in: ${error.message}`);
@@ -44,7 +48,6 @@ const LoginPage = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-
             <div className="mb-6">
               <label htmlFor="password" className="block text-gray-900 ">
                 Password
@@ -57,13 +60,23 @@ const LoginPage = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-
-            <button
-              type="submit"
-              className="bg-black text-green-500 px-10 py-2 rounded-md"
-            >
-              Login
-            </button>
+            {loading ? (
+              <div>
+                <img
+                  src="assets/images/loading.svg"
+                  alt="Loader Icon"
+                  className="animate-spin-slow h-7 w-7 mt-5"
+                  onClick={null}
+                />
+              </div>
+            ) : (
+              <button
+                type="submit"
+                className="bg-black text-green-500 px-10 py-2 rounded-md"
+              >
+                Login
+              </button>
+            )}
           </form>
         </div>
       </div>

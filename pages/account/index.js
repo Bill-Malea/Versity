@@ -1,4 +1,23 @@
-
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 import AccountPage from "@/components/Account/accounts";
-const Account = () => <AccountPage />;
-export default Account;
+import { auth } from "@/firebase";
+const AccountDetails = () => {
+  const router = useRouter();
+
+  const user = auth.currentUser;
+
+  useEffect(() => {
+    if (!user) {
+      router.replace("/auth");
+    }
+  }, [router, user]);
+
+  return (
+    <div>
+      <AccountPage />
+    </div>
+  );
+};
+
+export default AccountDetails;
