@@ -7,9 +7,11 @@ import ScholarshipPage from './Scholarship/Scholarship';
 import NewsPage from './News/News';
 import BlogPage from './Blog/Blog';
 import BlogDescriptionPage from './Blog/components/BlogDescription';
+import LoginPage from './Login/Login';
+import AccountPage from './Account/accounts';
 const Layout = () => {
 
-  const [activeTab, setActiveTab] = useState('home');
+  const [activeTab, setActiveTab] = useState('university');
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -29,7 +31,7 @@ const Layout = () => {
       case 'about':
         return <BlogDescriptionPage/>;
       default :"university"
-        return <Versities/>;
+        return <AccountPage/>;
     }
   };
 

@@ -1,32 +1,35 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import {router} from 'next/router';
 const NavBar = ({ onTabClick, activeTab }) => {
-   const router = useRouter();
+  
 
-  const handleUserIconClick = () => {
-      router.push('/login');
-      };
 
   return (
     <nav className="bg-black p-4 text-white fixed top-0  z-50  w-full shadow-md">
       <div className="container mx-auto flex items-start">
 
         {/* Logo Placeholder */}
+       
         <div className="flex items-center">
-          <div className="cursor-pointer" onClick={handleUserIconClick}>
+      
+            <div className="cursor-pointer">
   <img
             src="assets/images/account.svg" 
             alt="Account Icon"
-            className="w-6 h-6"
+            className="w-4 h-4 mr-4"
+            onClick={()=>{ redirect("/auth")}}
           />
 
 
-
-
-
+      
         </div>
+      
+          <Link href={"/"}>
           <span className="text-2xl font-semibold">Your Logo</span>
+          </Link>
         </div>
 
         {/* Navigation Tabs */}
