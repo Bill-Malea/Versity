@@ -9,3 +9,4 @@ export { default as NewsPage } from "./News/News";
 export { default as BlogPage } from "./Blog/Blog";
 export { default as BlogDescriptionPage } from "./Blog/components/BlogDescription";
 export { default as AccountPage } from "./Account/accounts";
+export { default as BlogDescription } from "./Blog/components/BlogDescription";

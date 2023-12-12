@@ -1,4 +1,3 @@
-import { Inter } from "next/font/google";
 import React, { useState } from "react";
 import {
   FellowshipPage,
@@ -7,40 +6,69 @@ import {
   ScholarshipPage,
   NavBar,
   Footer,
-  AuthPage,
   NewsPage,
+  Versities,
 } from "@/components";
-const inter = Inter({ subsets: ["latin"] });
+import {
+  getUniversities,
+  getFellowships,
+  getScholarships,
+  getNews,
+  getBlogs,
+} from "@/pages/api/firebase";
 
-export default function Home({ childre }) {
+export async function getStaticProps() {
+  const universities = await getUniversities();
+  const fellowships = await getFellowships();
+  const scholarships = await getScholarships();
+  const newsArticles = await getNews();
+  const blogs = await getBlogs();
+
+  return {
+    props: {
+      universities,
+      fellowships,
+      scholarships,
+      newsArticles,
+      blogs,
+    },
+    revalidate: 60 * 60, // Re-generate every 1 hour
+  };
+}
+
+export default function Home({
+  universities,
+  fellowships,
+  scholarships,
+  newsArticles,
+  blogs,
+}) {
   const [activeTab, setActiveTab] = useState("university");
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
+
   const renderContent = () => {
     switch (activeTab) {
       case "fellowship":
-        return <FellowshipPage />;
+        return <FellowshipPage fellowships={fellowships} />;
       case "scholarship":
-        return <ScholarshipPage />;
+        return <ScholarshipPage scholarships={scholarships} />;
       case "news":
-        return <NewsPage />;
+        return <NewsPage newsArticles={newsArticles} />;
       case "blog":
-        return <BlogPage />;
+        return <BlogPage blogs={blogs} />;
       case "about":
         return <BlogDescriptionPage />;
       default:
-        "university";
-        return <AuthPage />;
+        return <Versities versityList={universities} />;
     }
   };
 
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className} `}
-    >
+    <main className={`flex min-h-screen flex-col`}>
       <NavBar onTabClick={handleTabClick} activeTab={activeTab} />
-      <div className="mt-20 mb-56 lg">{renderContent()}</div>
+      <div className="mb-56 lg px-8 py-20 ">{renderContent()}</div>
       <Footer />
     </main>
   );

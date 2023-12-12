@@ -6,7 +6,7 @@ import ScholarshipTab from "./componets/ScholarshipsTab";
 import NewsTab from "./componets/NewsTab";
 import BlogTab from "./componets/BlogTab";
 import { signOut } from "firebase/auth";
-import { auth } from "@/firebase";
+import { auth } from "@/firebaseconfig";
 import { router } from "next/router";
 const AccountPage = () => {
   const [subTab, setSubTab] = useState("university");

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from "react";
-import { database } from "@/firebase";
+import { database } from "@/firebaseconfig";
 import InputField from "./InputComponent";
 import { ref, onValue, set, push } from "firebase/database";
 import DataItem from "./DataItem";
@@ -38,6 +38,7 @@ const NewsTab = () => {
   }, []);
 
   const handleEditClick = (newsItem) => {
+    setEditingNewsId(newsItem.id);
     setTitle(newsItem.title || "");
     setImage(newsItem.image || "");
     setContent(newsItem.content || "");
@@ -77,9 +78,7 @@ const NewsTab = () => {
       setLoading(true);
       if (editingNewsId) {
         // If editing an existing fellowship, update the existing document
-        await set(ref(database, `news/${editingScholarshipId}`), data);
-
-        setEditingNewsId(null);
+        await set(ref(database, `news/${editingNewsId}`), data);
       } else {
         // If adding a new fellowship, push a new document
         await push(newsRef, data);

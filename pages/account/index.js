@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import AccountPage from "@/components/Account/accounts";
-import { auth } from "@/firebase";
+import { auth } from "@/firebaseconfig";
 const AccountDetails = () => {
   const router = useRouter();
 

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
-import { auth } from "@/firebase";
+import { auth } from "@/firebaseconfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { router } from "next/router";
 const LoginPage = () => {
@@ -23,6 +23,7 @@ const LoginPage = () => {
       router.push("/account");
       // Redirect user upon successful login
     } catch (error) {
+      setLoading(false);
       setError(`Error logging in: ${error.message}`);
     }
   };

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from "react";
-import { database } from "@/firebase";
+import { database } from "@/firebaseconfig";
 import InputField from "./InputComponent";
 import { ref, onValue, set, push } from "firebase/database";
 import DataItem from "./DataItem";
@@ -44,6 +44,7 @@ const ScholarshipTab = () => {
   }, []);
 
   const handleEditClick = (scholarship) => {
+    setEditingFellowshipId(scholarship.id);
     setTitle(scholarship.title || "");
     setImage(scholarship.image || "");
     setContent(scholarship.content || "");
