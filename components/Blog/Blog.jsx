@@ -3,7 +3,7 @@ import BlogFeaturedPosts from "./components/FeaturedBlog";
 import BlogRecentPosts from "./components/RecentBlogs";
 const BlogPage = ({ blogs }) => {
   return (
-    <div className="lg:mx-10">
+    <div className="lg:mx-10  h-full">
       <BlogFeaturedPosts featuredPosts={blogs} />
       <BlogRecentPosts recentPosts={blogs} />
     </div>
