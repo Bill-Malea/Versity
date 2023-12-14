@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
-import UniversityTab from "./componets/UniversityEdit";
+import UniversityTab from "./componets/UniversityTab/UniversityEdit";
 import FellowshipTab from "./componets/FellowshipTab";
 import ScholarshipTab from "./componets/ScholarshipsTab";
 import NewsTab from "./componets/NewsTab";
