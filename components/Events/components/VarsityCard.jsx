@@ -1,16 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import Link from "next/link";
-const VersityCard = ({ event }) => {
+const VersityCard = ({ versity }) => {
   return (
-    <Link href={`/university/${event.id}`}>
+    <Link href={`/university/${versity.id}`}>
       <div className="bg-white p-4 rounded-lg cursor-pointer ">
         <img
-          src={event.image}
-          alt={event.title}
+          src={versity.image}
+          alt={versity.title}
           className="sm:w-auto lg:w-64 h-36 object-cover mb-4 rounded-md"
         />
-        <h3 className="text-sm font-semibold mb-2">{event.title}</h3>
+        <h3 className="text-sm font-semibold mb-2">{versity.title}</h3>
         <div className="flex items-center mb-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -25,9 +25,9 @@ const VersityCard = ({ event }) => {
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
             <circle cx="12" cy="9" r="2.5" fill="currentColor" />
           </svg>
-          <p className="text-gray-600">{event.location}</p>
+          <p className="text-gray-600">{versity.location}</p>
         </div>
-        <p className="text-gray-600">{event.date}</p>
+        <p className="text-gray-600">{versity.date}</p>
       </div>
     </Link>
   );

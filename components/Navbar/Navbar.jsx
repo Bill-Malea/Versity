@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const NavBar = ({ onTabClick, activeTab }) => {
   return (
-    <nav className="bg-black p-4 text-white fixed top-0  z-50  w-full shadow-md">
+    <nav className="bg-zodiac p-4 text-white fixed top-0  z-50  w-full shadow-md">
       <div className="container mx-auto flex items-start">
         {/* Logo Placeholder */}
 
@@ -39,8 +39,8 @@ const NavBar = ({ onTabClick, activeTab }) => {
               key={tab}
               className={`relative transition duration-300 ${
                 activeTab === tab
-                  ? "text-black bg-green-400  rounded-sm p-1"
-                  : "hover:text-green-400"
+                  ? "text-white bg-black  rounded-lg py-2 px-3"
+                  : "hover:text-white"
               }`}
               onClick={() => onTabClick(tab)}
             >

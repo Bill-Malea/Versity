@@ -1,14 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { database } from "@/firebaseconfig";
-import { ref, onValue, set, push } from "firebase/database";
+import { ref, onValue, set } from "firebase/database";
 import UniversityForm from "./components/UniversityForm";
 import UniversityList from "./components/UniversityList";
 
 const UniversityTab = () => {
   const [universities, setUniversities] = useState([]);
-  const [editingUniversityId, setEditingUniversityId] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
+  const [imageLink, setImageLink] = useState("");
+  const [description, setDescription] = useState("");
+  const [schools, setSchools] = useState([]);
 
+  const [editingUniversityId, setEditingUniversityId] = useState(null);
+
+  const [loading, setLoading] = useState(false);
+  const [university, setUniversity] = useState({
+    id: "",
+    name: "",
+    location: "",
+    description: "",
+    image: "",
+    schools: [],
+  });
   const universitiesRef = ref(database, "universities/");
 
   useEffect(() => {
@@ -34,6 +48,12 @@ const UniversityTab = () => {
 
   const handleEditClick = (university) => {
     setEditingUniversityId(university.id);
+    setName(university.name);
+    setLocation(university.location);
+    setImageLink(university.image);
+    setDescription(university.description);
+    setSchools(university.schools);
+    console.log(university);
   };
 
   const handleDeleteClick = async (id) => {
@@ -54,10 +74,19 @@ const UniversityTab = () => {
 
       <div className="flex gap-8 sm:flex-col lg:flex:row w-full ">
         <UniversityForm
+          schools={schools}
+          setSchools={setSchools}
+          name={name}
+          setName={setName}
+          location={location}
+          setLocation={setLocation}
+          imageLink={imageLink}
+          setImageLink={setImageLink}
+          description={description}
+          setDescription={setDescription}
           loading={loading}
           editingUniversityId={editingUniversityId}
           setEditingUniversityId={setEditingUniversityId}
-          setUniversities={setUniversities}
           setLoading={setLoading}
         />
 

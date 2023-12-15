@@ -1,120 +1,140 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
 import { database } from "@/firebaseconfig";
-
+import { ref, push, set } from "firebase/database";
 import InputField from "../../InputComponent";
+
 const UniversityForm = ({
+  schools,
+  setSchools,
+  name,
+  setName,
+  location,
+  setLocation,
+  imageLink,
+  setImageLink,
+  description,
+  setDescription,
   loading,
   editingUniversityId,
   setEditingUniversityId,
-  setUniversities,
   setLoading,
 }) => {
-  const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
-  const [imageLink, setImageLink] = useState("");
-  const [description, setDescription] = useState("");
-  const [departments, setDepartments] = useState([]);
+  const [error, setError] = useState("");
 
-  const handleAddDepartment = () => {
-    setDepartments([...departments, { name: "", schools: [] }]);
+  const handleAddschools = () => {
+    setSchools([...schools, { name: "", departments: [] }]);
   };
 
-  const handleRemoveDepartment = (index) => {
-    const updatedDepartments = [...departments];
-    updatedDepartments.splice(index, 1);
-    setDepartments(updatedDepartments);
+  const handleRemoveSchool = (index) => {
+    const updatedSchools = [...schools];
+    updatedSchools.splice(index, 1);
+    setSchools(updatedSchools);
   };
 
-  const handleDepartmentChange = (index, value) => {
-    const updatedDepartments = [...departments];
-    updatedDepartments[index].name = value;
-    setDepartments(updatedDepartments);
+  const handleSchoolsChange = (index, value) => {
+    const updatedSchools = [...schools];
+    updatedSchools[index].name = value;
+    setSchools(updatedSchools);
   };
 
-  const handleAddSchool = (departmentIndex) => {
-    const updatedDepartments = [...departments];
-    updatedDepartments[departmentIndex].schools.push({ name: "", courses: [] });
-    setDepartments(updatedDepartments);
+  const handleAddDepartment = (schoolIndex) => {
+    const updatedSchools = [...schools];
+    updatedSchools[schoolIndex].departments.push({ name: "", courses: [] });
+    setSchools(updatedSchools);
   };
 
-  const handleRemoveSchool = (departmentIndex, schoolIndex) => {
-    const updatedDepartments = [...departments];
-    updatedDepartments[departmentIndex].schools.splice(schoolIndex, 1);
-    setDepartments(updatedDepartments);
+  const handleRemoveDepartment = (schoolIndex, departmentIndex) => {
+    const updatedSchools = [...schools];
+    updatedSchools[schoolIndex].departments.splice(departmentIndex, 1);
+    setSchools(updatedSchools);
   };
 
-  const handleSchoolChange = (departmentIndex, schoolIndex, value) => {
-    const updatedDepartments = [...departments];
-    updatedDepartments[departmentIndex].schools[schoolIndex].name = value;
-    setDepartments(updatedDepartments);
+  const handleDeparmentChange = (schoolIndex, departmentIndex, value) => {
+    const updatedSchools = [...schools];
+    updatedSchools[schoolIndex].departments[departmentIndex].name = value;
+    setSchools(updatedSchools);
   };
 
-  const handleAddCourse = (departmentIndex, schoolIndex) => {
-    const updatedDepartments = [...departments];
-    updatedDepartments[departmentIndex].schools[schoolIndex].courses.push({
+  const handleAddCourse = (schoolIndex, departmentIndex) => {
+    const updatedSchools = [...schools];
+    updatedSchools[schoolIndex].departments[departmentIndex].courses.push({
       name: "",
       feeStructureLink: "",
     });
-    setDepartments(updatedDepartments);
+    setSchools(updatedSchools);
   };
 
-  const handleRemoveCourse = (departmentIndex, schoolIndex, courseIndex) => {
-    const updatedDepartments = [...departments];
-    updatedDepartments[departmentIndex].schools[schoolIndex].courses.splice(
+  const handleRemoveCourse = (schoolIndex, departmentIndex, courseIndex) => {
+    const updatedSchools = [...schools];
+    updatedSchools[schoolIndex].departments[departmentIndex].courses.splice(
       courseIndex,
       1
     );
-    setDepartments(updatedDepartments);
+    setSchools(updatedSchools);
   };
 
   const handleCourseChange = (
-    departmentIndex,
     schoolIndex,
+    departmentIndex,
     courseIndex,
     field,
     value
   ) => {
-    const updatedDepartments = [...departments];
-    updatedDepartments[departmentIndex].schools[schoolIndex].courses[
+    const updatedSchools = [...schools];
+    updatedSchools[schoolIndex].departments[departmentIndex].courses[
       courseIndex
     ][field] = value;
-    setDepartments(updatedDepartments);
+    setSchools(updatedSchools);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const universitiesRef = database.ref("universities");
+      const universitiesRef = ref(database, "universities/");
       const newUniversity = {
         name: name,
+        location: location,
         description: description,
         image: imageLink,
-        departments,
+        schools: schools,
       };
+      if (!name || !imageLink || !description || !schools) {
+        setError("Please fill in all fields.");
+        return;
+      }
       setLoading(true);
+
       if (editingUniversityId) {
-        await set(ref(database, `blogs/${editingUniversityId}`), newUniversity);
-        setEditingUniversityId(null);
+        await set(
+          ref(database, `universities/${editingUniversityId}`),
+          newUniversity
+        );
+
         setLoading(false);
+        setEditingUniversityId(null);
+
+        setName("");
+        setLocation("");
+        setImageLink("");
+        setSchools([]);
+        setDescription("");
       } else {
         await push(universitiesRef, newUniversity);
+
         setLoading(false);
       }
-      setName("");
-      setDescription("");
-      setImageLink("");
-      setDepartments([]);
     } catch (error) {
-      console.error("Error submitting university:", error);
+      setError(error);
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="justify-center">
-      {/* Input fields for university information */}
+      {error && <div className="text-red-500 mb-4 mt-7">{error}</div>}
 
+      {/* Input fields for university information */}
       <InputField
         label={"University Name"}
         type="text"
@@ -135,6 +155,7 @@ const UniversityForm = ({
         value={imageLink}
         onChange={(e) => setImageLink(e.target.value)}
       />
+
       <InputField
         label={"Description"}
         type={"textarea"}
@@ -142,134 +163,133 @@ const UniversityForm = ({
         onChange={(e) => setDescription(e.target.value)}
       />
 
-      {/* Input fields for departments */}
+      {/* Input fields for schools */}
       <div>
-        <h4 className="text-xl font-semibold mb-4">Departments:</h4>
-        {departments.map((department, departmentIndex) => (
-          <div key={departmentIndex}>
+        <h4 className="text-xl font-semibold mb-4">Schools:</h4>
+        {schools.map((school, schoolIndex) => (
+          <div key={schoolIndex}>
             <InputField
-              label={"Department"}
+              label={"School"}
               type="text"
-              value={department.name}
-              onChange={(e) =>
-                handleDepartmentChange(departmentIndex, e.target.value)
-              }
+              value={school.name}
+              onChange={(e) => handleSchoolsChange(schoolIndex, e.target.value)}
             />
 
             {/* Input fields for schools */}
             <div>
-              <h5 className="text-lg font-semibold mb-3">Schools:</h5>
-              {department.schools.map((school, schoolIndex) => (
-                <div key={schoolIndex}>
-                  <InputField
-                    label={"School"}
-                    type="text"
-                    value={school.name}
-                    onChange={(e) =>
-                      handleSchoolChange(
-                        departmentIndex,
-                        schoolIndex,
-                        e.target.value
-                      )
-                    }
-                  />
+              <h5 className="text-lg font-semibold mb-3">Departments:</h5>
+              {school.departments &&
+                school.departments.map((department, departmentIndex) => (
+                  <div key={schoolIndex}>
+                    <InputField
+                      label={"Department"}
+                      type="text"
+                      value={department.name}
+                      onChange={(e) =>
+                        handleDeparmentChange(
+                          schoolIndex,
+                          departmentIndex,
+                          e.target.value
+                        )
+                      }
+                    />
 
-                  {/* Input fields for courses */}
-                  <div>
-                    <h6 className="text-md font-semibold mb-2">Courses:</h6>
-                    {school.courses.map((course, courseIndex) => (
-                      <div key={courseIndex}>
-                        <InputField
-                          label={"Course Name"}
-                          type="text"
-                          value={course.name}
-                          onChange={(e) =>
-                            handleCourseChange(
-                              departmentIndex,
-                              schoolIndex,
-                              courseIndex,
-                              "name",
-                              e.target.value
-                            )
-                          }
-                        />
-                        <InputField
-                          label={"Fee Structure Link"}
-                          type="text"
-                          value={course.feeStructureLink}
-                          onChange={(e) =>
-                            handleCourseChange(
-                              departmentIndex,
-                              schoolIndex,
-                              courseIndex,
-                              "feeStructureLink",
-                              e.target.value
-                            )
-                          }
-                        />
+                    {/* Input fields for courses */}
+                    <div>
+                      <h6 className="text-md font-semibold mb-2">Courses:</h6>
+                      {department.courses.map((course, courseIndex) => (
+                        <div key={courseIndex}>
+                          <InputField
+                            label={"Course Name"}
+                            type="text"
+                            value={course.name}
+                            onChange={(e) =>
+                              handleCourseChange(
+                                schoolIndex,
+                                departmentIndex,
+                                courseIndex,
+                                "name",
+                                e.target.value
+                              )
+                            }
+                          />
+                          <InputField
+                            label={"Fee Structure Link"}
+                            type="text"
+                            value={course.feeStructureLink}
+                            onChange={(e) =>
+                              handleCourseChange(
+                                schoolIndex,
+                                departmentIndex,
+                                courseIndex,
+                                "feeStructureLink",
+                                e.target.value
+                              )
+                            }
+                          />
 
-                        <button
-                          type="button"
-                          className="relative text-sm transition duration-300 text-red-500 bg-black rounded-md px-3 py-1 mt-2"
-                          onClick={() =>
-                            handleRemoveCourse(
-                              departmentIndex,
-                              schoolIndex,
-                              courseIndex
-                            )
-                          }
-                        >
-                          Remove Course
-                        </button>
-                      </div>
-                    ))}
+                          <button
+                            type="button"
+                            className="relative text-sm transition duration-300 text-red-500 bg-black rounded-md px-3 py-1 mt-2"
+                            onClick={() =>
+                              handleRemoveCourse(
+                                schoolIndex,
+                                departmentIndex,
+                                courseIndex
+                              )
+                            }
+                          >
+                            Remove Course
+                          </button>
+                        </div>
+                      ))}
+
+                      <button
+                        type="button"
+                        className="relative text-sm transition duration-300 text-green-400 bg-black rounded-md px-3 py-1 mt-2"
+                        onClick={() =>
+                          handleAddCourse(schoolIndex, departmentIndex)
+                        }
+                      >
+                        Add Course
+                      </button>
+                    </div>
 
                     <button
                       type="button"
-                      className="relative text-sm transition duration-300 text-green-400 bg-black rounded-md px-3 py-1 mt-2"
+                      className="relative text-sm transition duration-300 text-red-500 bg-black rounded-md px-3 py-1 mt-3"
                       onClick={() =>
-                        handleAddCourse(departmentIndex, schoolIndex)
+                        handleRemoveDepartment(schoolIndex, departmentIndex)
                       }
                     >
-                      Add Course
+                      Remove Department
                     </button>
                   </div>
-
-                  <button
-                    type="button"
-                    className="relative text-sm transition duration-300 text-red-500 bg-black rounded-md px-3 py-1 mt-3"
-                    onClick={() =>
-                      handleRemoveSchool(departmentIndex, schoolIndex)
-                    }
-                  >
-                    Remove School
-                  </button>
-                </div>
-              ))}
+                ))}
               <button
                 type="button"
                 className="relative text-sm transition duration-300 text-green-400 bg-black rounded-md px-3 py-1 mt-3"
-                onClick={() => handleAddSchool(departmentIndex)}
+                onClick={() => handleAddDepartment(schoolIndex)}
               >
-                Add School
+                Add Department
               </button>
             </div>
 
             <button
               type="button"
               className="relative text-sm transition duration-300 text-red-500 bg-black rounded-md px-3 py-1 mt-3"
-              onClick={() => handleRemoveDepartment(departmentIndex)}
+              onClick={() => handleRemoveSchool(schoolIndex)}
             >
-              Remove Department
+              Remove School
             </button>
           </div>
         ))}
         <button
           type="button"
           className="relative text-sm transition duration-300 text-green-400 bg-black rounded-md px-3 py-1 mt-3"
-          onClick={handleAddDepartment}
+          onClick={handleAddschools}
         >
-          Add Department
+          Add School
         </button>
       </div>
 
