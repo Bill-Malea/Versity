@@ -15,14 +15,7 @@ const UniversityTab = () => {
   const [editingUniversityId, setEditingUniversityId] = useState(null);
 
   const [loading, setLoading] = useState(false);
-  const [university, setUniversity] = useState({
-    id: "",
-    name: "",
-    location: "",
-    description: "",
-    image: "",
-    schools: [],
-  });
+
   const universitiesRef = ref(database, "universities/");
 
   useEffect(() => {

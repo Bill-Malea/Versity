@@ -13,19 +13,19 @@ const VersityDetails = ({ versity }) => {
       selectedCourse,
     });
   };
+
   return (
-    <div className="lg:ml-36 mr-10 mx-5 my-10">
-      <div className="flex  lg:flex-row sm:flex-col  w-full">
+    <div className="lg:ml-36 mx-5 my-10">
+      <div className="flex flex-col w-full lg:flex-row">
         <img
           src={versity.image}
           alt={versity.name}
-          className="lg:w-1/2 h-96 object-cover mb-4 rounded-md mr-10"
+          className="w-full h-64 object-cover mb-4 rounded-md lg:w-1/2 lg:mr-10"
         />
 
-        <div>
-          <h2 className="text-3xl w-full font-semibold mb-4">{versity.name}</h2>
-
-          <div className="mt-5">{versity.description}</div>
+        <div className="lg:w-1/2">
+          <h2 className="text-3xl font-semibold mb-4">{versity.name}</h2>
+          <div className="mt-5 ">{versity.description}</div>
         </div>
       </div>
 
@@ -33,20 +33,17 @@ const VersityDetails = ({ versity }) => {
       <div className="mt-8">
         <h2 className="text-xl font-medium mb-4">Departments</h2>
 
-        {/* School Dropdown */}
-
-        <div className="">
+        <div className="flex flex-col  lg:flex-row">
           <select
-            className="mb-4  mr-5 border-4 border-gray-300  rounded-lg py-2 px-4"
+            className="mb-4 lg:mr-5 lg:w-1/3 border border-black rounded-lg py-2 px-4"
             value={selectedSchool}
             onChange={(e) => {
               setSelectedSchool(e.target.value);
-              setSelectedDepartment(""); // Reset department when school changes
-              setSelectedCourse(null); // Reset course when school changes
+              setSelectedDepartment("");
+              setSelectedCourse(null);
             }}
           >
             <option value="">Select School</option>
-
             {versity.schools.map((school, i) => (
               <option key={i} value={school.name}>
                 {school.name}
@@ -54,17 +51,15 @@ const VersityDetails = ({ versity }) => {
             ))}
           </select>
 
-          {/* Department Dropdown */}
           <select
-            className="mb-4 mr-5 border border-gray-300 rounded-md py-2 px-4"
+            className="mb-4 lg:mr-5 lg:w-1/3 border border-black rounded-md py-2 px-4"
             value={selectedDepartment}
             onChange={(e) => {
               setSelectedDepartment(e.target.value);
-              setSelectedCourse(null); // Reset course when department changes
+              setSelectedCourse(null);
             }}
           >
             <option value="">Select Department</option>
-
             {versity.schools
               .find((school) => school.name === selectedSchool)
               ?.departments.map((department, i) => (
@@ -74,14 +69,12 @@ const VersityDetails = ({ versity }) => {
               ))}
           </select>
 
-          {/* Course Dropdown */}
           <select
-            className="mb-4 mr-5 border border-gray-300 rounded-md py-2 px-4"
+            className="mb-4 lg:mr-5 lg:w-1/3 border border-black rounded-md py-2 px-4"
             value={selectedCourse}
             onChange={(e) => setSelectedCourse(e.target.value)}
           >
             <option value="">Select Course</option>
-
             {versity.schools
               .find((school) => school.name === selectedSchool)
               ?.departments.find((dept) => dept.name === selectedDepartment)
@@ -92,10 +85,9 @@ const VersityDetails = ({ versity }) => {
               ))}
           </select>
 
-          {/* Download Button */}
           {selectedCourse != null ? (
             <button
-              className="bg-black border-gray-300 text-green-500 px-2 py-2 rounded-md"
+              className="bg-black text-green-500 px-2 py-2 rounded-md"
               onClick={handleDownload}
             >
               Download Fee Structure
