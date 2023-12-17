@@ -13,6 +13,7 @@ const FellowshipTab = () => {
   const [error, setError] = useState("");
   const [editingFellowshipId, setEditingFellowshipId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [searchFellowshipId, setSearchFellowshipId] = useState("");
   useEffect(() => {
     // Fetch existing fellowships from Firebase Realtime Database
     const fetchFellowships = () => {
@@ -105,8 +106,14 @@ const FellowshipTab = () => {
   return (
     <div className="flex flex-col lg:flex-row">
       <div className="mr-10">
-        <h3 className="text-xl font-semibold mb-5">
-          {" "}
+        <h3 className="text-2xl font-semibold mb-5 ">Fellowship Tab</h3>
+        <InputField
+          label={"Search Fellowship"}
+          type="text"
+          value={searchFellowshipId}
+          onChange={(e) => setSearchFellowshipId(e.target.value)}
+        />
+        <h3 className="text-xl font-semibold mb-5 mt-5">
           Add Fellowship Programme
         </h3>
 
@@ -165,17 +172,23 @@ const FellowshipTab = () => {
       <div>
         <h3 className="text-xl font-semibold mb-5">Fellowship Programmes</h3>
         <ul>
-          {fellowships.map((fellowship) => (
-            <DataItem
-              key={fellowship.id}
-              title={fellowship.title}
-              image={fellowship.image}
-              content={fellowship.content}
-              data={fellowship}
-              onDeleteClick={() => handleDeleteClick(fellowship.id)}
-              onEditClick={() => handleEditClick(fellowship)}
-            />
-          ))}
+          {fellowships
+            .filter((fellowship) =>
+              fellowship.id
+                .toLowerCase()
+                .includes(searchFellowshipId.toLowerCase())
+            )
+            .map((fellowship) => (
+              <DataItem
+                key={fellowship.id}
+                title={fellowship.title}
+                image={fellowship.image}
+                content={fellowship.content}
+                data={fellowship}
+                onDeleteClick={() => handleDeleteClick(fellowship.id)}
+                onEditClick={() => handleEditClick(fellowship)}
+              />
+            ))}
         </ul>
       </div>
     </div>

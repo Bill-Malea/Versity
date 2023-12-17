@@ -13,7 +13,7 @@ const ScholarshipTab = () => {
   const [error, setError] = useState("");
   const [editingScholarshipId, setEditingFellowshipId] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const [searchScholarshipId, setSearchScholarshipId] = useState("");
   useEffect(() => {
     // Fetch existing scholarships from Firebase Realtime Database
     const fetchScholarships = () => {
@@ -87,7 +87,7 @@ const ScholarshipTab = () => {
 
         setEditingFellowshipId(null);
       } else {
-        // If adding a new fellowship, push a new document
+        // If adding a new scholarship, push a new document
         await push(dbref, data);
       }
 
@@ -106,7 +106,16 @@ const ScholarshipTab = () => {
   return (
     <div className="flex flex-col lg:flex-row">
       <div className="mr-10">
-        <h3 className="text-xl font-semibold mb-5">Scholarship Tab</h3>
+        <h3 className="text-2xl font-semibold mb-5 ">Scholarship Tab</h3>
+        <InputField
+          label={"Search Scholarship"}
+          type="text"
+          value={searchScholarshipId}
+          onChange={(e) => setSearchScholarshipId(e.target.value)}
+        />
+        <h3 className="text-xl font-semibold mb-5 mt-5">
+          Add Scholarship Programme
+        </h3>
         {error && <div className="text-red-500 mb-4 mt-7">{error}</div>}
         {/* Scholarship Form */}
         <form onSubmit={handleSubmit}>
@@ -160,17 +169,23 @@ const ScholarshipTab = () => {
         <h3 className="text-xl font-semibold mb-5"> Scholarships</h3>
         {/* List of Existing Scholarships */}
         <ul>
-          {scholarships.map((scholarship) => (
-            <DataItem
-              key={scholarship.id}
-              title={scholarship.title}
-              image={scholarship.image}
-              content={scholarship.content}
-              data={scholarship}
-              onDeleteClick={() => handleDeleteClick(scholarship.id)}
-              onEditClick={() => handleEditClick(scholarship)}
-            />
-          ))}
+          {scholarships
+            .filter((scholarship) =>
+              scholarship.id
+                .toLowerCase()
+                .includes(searchScholarshipId.toLowerCase())
+            )
+            .map((scholarship) => (
+              <DataItem
+                key={scholarship.id}
+                title={scholarship.title}
+                image={scholarship.image}
+                content={scholarship.content}
+                data={scholarship}
+                onDeleteClick={() => handleDeleteClick(scholarship.id)}
+                onEditClick={() => handleEditClick(scholarship)}
+              />
+            ))}
         </ul>
       </div>
     </div>

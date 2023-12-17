@@ -31,7 +31,7 @@ const NavBar = ({ onTabClick, activeTab }) => {
             "university",
             "fellowship",
             "scholarship",
-            "news",
+            "events",
             "blog",
             "about",
           ].map((tab) => (

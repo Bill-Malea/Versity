@@ -8,6 +8,8 @@ import BlogTab from "./componets/BlogTab";
 import { signOut } from "firebase/auth";
 import { auth } from "@/firebaseconfig";
 import { router } from "next/router";
+import BannerTab from "./componets/BannerTab";
+import CreateUser from "./componets/UsersTab";
 const AccountPage = () => {
   const [subTab, setSubTab] = useState("university");
   const [loading, setLoading] = useState(false);
@@ -72,9 +74,10 @@ const AccountPage = () => {
                 "university",
                 "fellowship",
                 "scholarship",
-                "news",
+                "events",
                 "blog",
                 "banner",
+                "users",
               ].map((tab) => (
                 <button
                   key={tab}
@@ -95,8 +98,10 @@ const AccountPage = () => {
             {subTab === "university" && <UniversityTab />}
             {subTab === "fellowship" && <FellowshipTab />}
             {subTab === "scholarship" && <ScholarshipTab />}
-            {subTab === "news" && <NewsTab />}
+            {subTab === "events" && <NewsTab />}
             {subTab === "blog" && <BlogTab />}
+            {subTab === "banner" && <BannerTab />}
+            {subTab === "users" && <CreateUser />}
           </div>
         </div>
       </div>

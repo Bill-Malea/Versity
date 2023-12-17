@@ -13,6 +13,8 @@ const BlogTab = () => {
   const [error, setError] = useState("");
   const [editingBlogId, setEditingBlogId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [searchBlogId, setSearchBlogId] = useState("");
+
   useEffect(() => {
     const fetchBlogs = () => {
       const blogsRef = ref(database, "blogs/");
@@ -73,12 +75,12 @@ const BlogTab = () => {
       };
       setLoading(true);
       if (editingBlogId) {
-        // If editing an existing fellowship, update the existing document
+        // If editing an existing blog, update the existing document
         await set(ref(database, `blogs/${editingBlogId}`), data);
 
         setEditingBlogId(null);
       } else {
-        // If adding a new fellowship, push a new document
+        // If adding a new blog, push a new document
         await push(blogsRef, data);
       }
 
@@ -97,6 +99,13 @@ const BlogTab = () => {
     <div className="flex flex-col lg:flex-row">
       <div className="mr-10">
         <h3 className="text-xl font-semibold mb-5">Blog Tab</h3>
+        <InputField
+          label={"Search Blog"}
+          type="text"
+          value={searchBlogId}
+          onChange={(e) => setSearchBlogId(e.target.value)}
+        />
+        <h3 className="text-lg font-semibold mb-5">Add Blog</h3>
         {error && <div className="text-red-500 mb-4 mt-7">{error}</div>}
         {/* Blog Form */}
         <form onSubmit={handleSubmit}>
@@ -148,17 +157,21 @@ const BlogTab = () => {
         <h3 className="text-xl font-semibold mb-5"> Existing Blogs</h3>
         {/* List of Existing Blogs */}
         <ul>
-          {blogs.map((blog) => (
-            <DataItem
-              key={blog.id}
-              title={blog.title}
-              image={blog.image}
-              content={blog.content}
-              data={blog}
-              onDeleteClick={() => handleDeleteClick(blog.id)}
-              onEditClick={() => handleEditClick(blog)}
-            />
-          ))}
+          {blogs
+            .filter((blog) =>
+              blog.id.toLowerCase().includes(searchBlogId.toLowerCase())
+            )
+            .map((blog) => (
+              <DataItem
+                key={blog.id}
+                title={blog.title}
+                image={blog.image}
+                content={blog.content}
+                data={blog}
+                onDeleteClick={() => handleDeleteClick(blog.id)}
+                onEditClick={() => handleEditClick(blog)}
+              />
+            ))}
         </ul>
       </div>
     </div>

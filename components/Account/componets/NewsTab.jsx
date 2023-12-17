@@ -13,6 +13,7 @@ const NewsTab = () => {
   const [error, setError] = useState("");
   const [editingNewsId, setEditingNewsId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [searchNewsId, setSearchNewsId] = useState("");
   useEffect(() => {
     const fetchNews = () => {
       const newsRef = ref(database, "news/");
@@ -98,7 +99,16 @@ const NewsTab = () => {
   return (
     <div className="flex flex-col lg:flex-row">
       <div className="mr-10">
-        <h3 className="text-xl font-semibold mb-5">News Tab</h3>
+        <h3 className="text-2xl font-semibold mb-5 ">Event Tab</h3>
+        <InputField
+          label={"Search Event"}
+          type="text"
+          value={searchNewsId}
+          onChange={(e) => setSearchNewsId(e.target.value)}
+        />
+        <h3 className="text-xl font-semibold mb-5 mt-5">
+          Add New Event Programme
+        </h3>
         {error && <div className="text-red-500 mb-4 mt-7">{error}</div>}
         {/* News Form */}
         <form onSubmit={handleSubmit}>
@@ -146,20 +156,24 @@ const NewsTab = () => {
         </form>
       </div>
       <div>
-        <h3 className="text-xl font-semibold mb-5"> News</h3>
+        <h3 className="text-xl font-semibold mb-5"> Events</h3>
         {/* List of Existing News */}
         <ul>
-          {news.map((newsItem) => (
-            <DataItem
-              key={newsItem.id}
-              title={newsItem.title}
-              image={newsItem.image}
-              content={newsItem.content}
-              data={newsItem}
-              onDeleteClick={() => handleDeleteClick(newsItem.id)}
-              onEditClick={() => handleEditClick(newsItem)}
-            />
-          ))}
+          {news
+            .filter((news) =>
+              news.id.toLowerCase().includes(searchNewsId.toLowerCase())
+            )
+            .map((newsItem) => (
+              <DataItem
+                key={newsItem.id}
+                title={newsItem.title}
+                image={newsItem.image}
+                content={newsItem.content}
+                data={newsItem}
+                onDeleteClick={() => handleDeleteClick(newsItem.id)}
+                onEditClick={() => handleEditClick(newsItem)}
+              />
+            ))}
         </ul>
       </div>
     </div>
