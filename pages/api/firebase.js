@@ -91,11 +91,14 @@ export const getBanners = async () => {
   const Ref = ref(database, "banners/");
   const snapshot = await get(Ref);
   const data = snapshot.val();
+
   if (!!data) {
     const banners = Object.entries(data).map(([id, banner]) => ({
       id,
       ...banner,
     }));
+
+    console.log("IMAGESSSSS+++++++++++++", banners);
     return banners;
   }
 

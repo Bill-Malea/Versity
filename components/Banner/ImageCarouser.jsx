@@ -18,9 +18,9 @@ const ImageCarousel = ({ images }) => {
   return (
     <Slider {...settings}>
       {images.map((image, index) => (
-        <div key={index}>
+        <div key={index} className="lg:ml-10">
           <img
-            src={image}
+            src={image.image}
             className="rounded-lg lg:w-3/4 w-full lg:h-96 sm:h-16 object-cover"
             alt={`Slide ${index + 1}`}
           />

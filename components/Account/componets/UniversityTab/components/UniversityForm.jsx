@@ -98,7 +98,7 @@ const UniversityForm = ({
         location: location,
         description: description,
         image: imageLink,
-        schools: schools,
+        programs: programs,
       };
       if (!name || !imageLink || !description || !schools) {
         setError("Please fill in all fields.");
@@ -133,6 +133,8 @@ const UniversityForm = ({
   return (
     <form onSubmit={handleSubmit} className="justify-center">
       {error && <div className="text-red-500 mb-4 mt-7">{error}</div>}
+
+      <h4 className="text-xl font-semibold mb-4">Programs:</h4>
 
       {/* Input fields for university information */}
       <InputField

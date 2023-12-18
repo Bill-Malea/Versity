@@ -12,6 +12,7 @@ import {
 } from "@/components";
 import {
   getUniversities,
+  getBanners,
   getFellowships,
   getScholarships,
   getNews,
@@ -24,6 +25,7 @@ export async function getStaticProps() {
   const scholarships = await getScholarships();
   const newsArticles = await getNews();
   const blogs = await getBlogs();
+  const banners = await getBanners();
 
   return {
     props: {
@@ -32,6 +34,7 @@ export async function getStaticProps() {
       scholarships,
       newsArticles,
       blogs,
+      banners,
     },
     revalidate: 60 * 60, // Re-generate every 1 hour
   };
@@ -43,6 +46,7 @@ export default function Home({
   scholarships,
   newsArticles,
   blogs,
+  banners,
 }) {
   const [activeTab, setActiveTab] = useState("university");
   const handleTabClick = (tab) => {
@@ -64,7 +68,7 @@ export default function Home({
         return <BlogPage blogs={blogs} />;
 
       default:
-        return <Versities versityList={universities} />;
+        return <Versities versityList={universities} banners={banners} />;
     }
   };
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import BannerSlider from "./components/Banner";
 import VersityCard from "./components/VarsityCard";
 
-const Versities = ({ versityList, Banners }) => {
+const Versities = ({ versityList, banners }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredVersities = versityList.filter((versity) => {
@@ -15,7 +15,7 @@ const Versities = ({ versityList, Banners }) => {
 
   return (
     <div className="container mx-auto">
-      <BannerSlider />
+      <BannerSlider images={banners} />
 
       <div className="lg:ml-10 sm:ml mt-5">
         <h2 className="text-2xl font-semibold lg:mb-4 sm:ml-4">Universities</h2>
