@@ -10,6 +10,7 @@ import { auth } from "@/firebaseconfig";
 import { router } from "next/router";
 import BannerTab from "./componets/BannerTab";
 import CreateUser from "./componets/UsersTab";
+import CollegeTab from "./componets/CollegesTab";
 const AccountPage = () => {
   const [subTab, setSubTab] = useState("university");
   const [loading, setLoading] = useState(false);
@@ -72,6 +73,7 @@ const AccountPage = () => {
             <div className="mb-4 flex sm:flex-row lg:flex-col text-left">
               {[
                 "university",
+                "collages",
                 "fellowship",
                 "scholarship",
                 "events",
@@ -96,6 +98,7 @@ const AccountPage = () => {
           </div>
           <div className="w-full lg:w-3/4 ">
             {subTab === "university" && <UniversityTab />}
+            {subTab === "collages" && <CollegeTab />}
             {subTab === "fellowship" && <FellowshipTab />}
             {subTab === "scholarship" && <ScholarshipTab />}
             {subTab === "events" && <NewsTab />}

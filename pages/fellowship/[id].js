@@ -2,6 +2,9 @@ import FellowshipDetails from "@/components/Fellowship/components/FellowshipDeta
 import { getFellowships } from "../api/firebase";
 
 export default function FellowshipDetailsPage({ data }) {
+  if (!data) {
+    return <div>Loading...</div>;
+  }
   return <FellowshipDetails fellowship={data} />;
 }
 

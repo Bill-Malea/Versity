@@ -1,6 +1,9 @@
 import { getUniversities } from "../api/firebase";
 import VersityDetails from "@/components/Events/components/VersityDescription";
 export default function VersityDetailPage({ versity }) {
+  if (!versity) {
+    return <div>Loading...</div>;
+  }
   return <VersityDetails versity={versity} />;
 }
 

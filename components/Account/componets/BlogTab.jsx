@@ -155,7 +155,7 @@ const BlogTab = () => {
       </div>
       <div>
         <h3 className="text-xl font-semibold mb-5"> Existing Blogs</h3>
-        {/* List of Existing Blogs */}
+
         <ul>
           {blogs
             .filter((blog) =>

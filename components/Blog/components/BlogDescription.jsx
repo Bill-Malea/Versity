@@ -2,6 +2,9 @@
 import React from "react";
 
 const BlogDescriptionPage = ({ blogPost }) => {
+  if (!blogPost) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="lg:mx-40 mx-5 my-5">
       <h2 className="text-3xl font-semibold mb-4">{blogPost.title}</h2>

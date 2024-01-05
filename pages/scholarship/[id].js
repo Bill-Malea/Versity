@@ -2,6 +2,9 @@ import ScholarshipDetails from "@/components/Scholarship/components/ScholarshipD
 import { getScholarships } from "../api/firebase";
 
 export default function ScholarshipDetailsPage({ scholarship }) {
+  if (!scholarship) {
+    return <div>Loading...</div>;
+  }
   return <ScholarshipDetails scholarship={scholarship} />;
 }
 

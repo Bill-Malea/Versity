@@ -11,12 +11,8 @@ const BlogPost = ({ post }) => (
         className="w-full h-40 object-cover mb-4 rounded-t-md"
       />
       <div className="h-36 overflow-hidden">
-        {" "}
-        {/* Added overflow-hidden */}
         <h3 className="text-md font-semibold mb-2">{post.title}</h3>
         <p className="text-gray-800 overflow-hidden line-clamp-3">
-          {" "}
-          {/* Added overflow properties and line-clamp */}
           {post.content}
         </p>
       </div>

@@ -19,6 +19,23 @@ export const getUniversities = async () => {
   return [];
 };
 
+// Fetch Collages
+export const getCollages = async () => {
+  const colRef = ref(database, "collages/");
+  const snapshot = await get(colRef);
+  const data = snapshot.val();
+  console.log("DATA==============", data);
+  if (!!data) {
+    const cols = Object.entries(data).map(([id, col]) => ({
+      id,
+      ...col,
+    }));
+    return cols;
+  }
+
+  return [];
+};
+
 // Fetch fellowships
 export const getFellowships = async () => {
   const Ref = ref(database, "fellowships/");

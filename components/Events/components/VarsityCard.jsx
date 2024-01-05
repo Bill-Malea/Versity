@@ -1,9 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import Link from "next/link";
-const VersityCard = ({ versity }) => {
+const VersityCard = ({ versity, isCollage }) => {
   return (
-    <Link href={`/university/${versity.id}`}>
+    <Link
+      href={isCollage ? `/collage/${versity.id}` : `/university/${versity.id}`}
+    >
       <div className="bg-white p-4 rounded-lg cursor-pointer ">
         <img
           src={versity.image}

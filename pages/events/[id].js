@@ -2,6 +2,9 @@ import NewsDetails from "@/components/News/components/NewsDetail";
 import { getNews } from "../api/firebase";
 
 export default function NewsDetailsPage({ news }) {
+  if (!news) {
+    return <div>Loading...</div>;
+  }
   return <NewsDetails news={news} />;
 }
 

@@ -2,29 +2,29 @@
 import React, { useState, useEffect } from "react";
 import { database } from "@/firebaseconfig";
 import { ref, onValue, push, set, update } from "firebase/database";
-import InputField from "../InputComponent";
-import UniversityItem from "./components/UniversityItem";
+import InputField from "./InputComponent";
+import UniversityItem from "./UniversityTab/components/UniversityItem";
 
-const UniversityTab = () => {
-  const [universities, setUniversities] = useState([]);
+const CollegeTab = () => {
+  const [collages, setCollages] = useState([]);
   // University details
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [imageLink, setImageLink] = useState("");
 
-  const [universityLink, setUniversityLink] = useState("");
+  const [collageLink, setCollageLink] = useState("");
   const [description, setDescription] = useState("");
   const [uniId, setUniId] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Fetch universities from Firebase
+    // Fetch collages from Firebase
     const fetchUniversities = () => {
-      const universitiesRef = ref(database, "universities/");
+      const universitiesRef = ref(database, "collages/");
       onValue(universitiesRef, (snapshot) => {
         const data = snapshot.val();
-        setUniversities(
+        setCollages(
           data
             ? Object.entries(data).map(([id, value]) => ({ id, ...value }))
             : []
@@ -34,32 +34,16 @@ const UniversityTab = () => {
     fetchUniversities();
   }, []);
 
-  const createUniversity = async (universityData) => {
-    const universityRef = push(ref(database, "universities"));
-    await set(universityRef, universityData);
+  const createCollage = async (collageData) => {
+    const universityRef = push(ref(database, "collages"));
+    await set(universityRef, collageData);
     return universityRef.key;
-  };
-
-  const addProgramsToUniversity = async (universityKey) => {
-    const programTypes = ["undergraduate", "masters", "phd"];
-
-    for (const type of programTypes) {
-      const programRef = push(
-        ref(database, `universities/${universityKey}/programs`)
-      );
-      const programData = {
-        type: type,
-        schools: {},
-      };
-
-      await set(programRef, programData);
-    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !location || !imageLink || !description) {
+    if (!name || !location || !imageLink || !description || !collageLink) {
       setError("Please fill in all fields.");
       return;
     }
@@ -67,33 +51,31 @@ const UniversityTab = () => {
     try {
       setLoading(true);
 
-      const universitydata = {
+      const collagedata = {
         name: name,
         location: location,
         image: imageLink,
-        description: description,
-        uniLink: universityLink,
+        description,
+        collageLink: collageLink,
       };
 
-      /// update uni
       if (uniId) {
-        const universityRef = ref(database, `universities/${uniId}`);
+        const universityRef = ref(database, `collages/${uniId}`);
 
-        await update(universityRef, universitydata);
+        await update(universityRef, collagedata);
       } else {
-        // create a uni
-        await createUniversity(universitydata);
+        await createCollage(collagedata);
       }
 
       setName("");
       setLocation("");
       setImageLink("");
       setDescription("");
-      setUniversityLink("");
       setUniId(null);
       setError("");
+      setCollageLink("");
     } catch (error) {
-      setError("Error submitting university: " + error.message);
+      setError("Error submitting collage: " + error.message);
     } finally {
       setLoading(false);
     }
@@ -103,39 +85,38 @@ const UniversityTab = () => {
     try {
       setLoading(true);
 
-      // Delete the university
-      await set(ref(database, "universities/" + universityId), null);
+      await set(ref(database, "collages/" + universityId), null);
+
+      setCollages(collages.filter((uni) => uni.id !== universityId));
+
       setName("");
       setLocation("");
       setImageLink("");
       setDescription("");
-      setUniversityLink("");
       setUniId(null);
       setError("");
-      // Update the local state to reflect the deletion
-      setUniversities(universities.filter((uni) => uni.id !== universityId));
+      setCollageLink("");
     } catch (error) {
-      setError("Error deleting university: " + error.message);
+      setError("Error deleting collage: " + error.message);
     } finally {
       setLoading(false);
     }
   };
-  const onEditClick = (university) => {
-    setName(university.name);
-    setLocation(university.location);
-    setImageLink(university.image);
-    setDescription(university.description);
-    setUniversityLink(university.uniLink);
 
-    setUniId(university.id);
+  const onEditClick = (collage) => {
+    setName(collage.name);
+    setLocation(collage.location);
+    setImageLink(collage.image);
+    setDescription(collage.description);
+    setCollageLink(collage.collageLink);
+    setUniId(collage.id);
   };
+
   return (
     <div className="flex flex-col lg:flex-row">
       <div className="mr-10">
         {/* University Form */}
-        <h3 className="text-xl font-semibold mb-5">
-          Add University and Program
-        </h3>
+        <h3 className="text-xl font-semibold mb-5">Add Collage</h3>
         {error && <div className="text-red-500 mb-4">{error}</div>}
         <form onSubmit={handleSubmit}>
           {/* University Fields */}
@@ -156,9 +137,9 @@ const UniversityTab = () => {
           />
 
           <InputField
-            label="University Link"
-            value={universityLink}
-            onChange={(e) => setUniversityLink(e.target.value)}
+            label="Collage Link"
+            value={collageLink}
+            onChange={(e) => setCollageLink(e.target.value)}
           />
           <InputField
             type={"textarea"}
@@ -173,23 +154,23 @@ const UniversityTab = () => {
             disabled={loading}
             onClick={handleSubmit}
           >
-            {uniId == null ? "Add University" : "Update University"}
+            {uniId == null ? "Add Collage" : "Update Collage"}
           </button>
         </form>
       </div>
 
       {/* List of Existing Universities */}
       <div className="mt-10 lg:mt-0">
-        <h3 className="text-xl font-semibold mb-5">Existing Universities</h3>
+        <h3 className="text-xl font-semibold mb-5">Existing Collages</h3>
         <ul>
-          {universities.map((university) => (
+          {collages.map((collage) => (
             <UniversityItem
-              universityId={university.id}
-              imageLink={university.image}
-              key={university.id}
-              university={university}
-              onDeleteClick={() => onDeleteClick(university.id)}
-              onEditClick={() => onEditClick(university)}
+              universityId={collage.id}
+              imageLink={collage.image}
+              key={collage.id}
+              collage={collage}
+              onDeleteClick={() => onDeleteClick(collage.id)}
+              onEditClick={() => onEditClick(collage)}
             />
           ))}
         </ul>
@@ -198,4 +179,4 @@ const UniversityTab = () => {
   );
 };
 
-export default UniversityTab;
+export default CollegeTab;

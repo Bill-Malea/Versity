@@ -16,11 +16,13 @@ import {
   getFellowships,
   getScholarships,
   getNews,
+  getCollages,
   getBlogs,
 } from "@/pages/api/firebase";
 
 export async function getStaticProps() {
   const universities = await getUniversities();
+  const collages = await getCollages();
   const fellowships = await getFellowships();
   const scholarships = await getScholarships();
   const newsArticles = await getNews();
@@ -30,6 +32,7 @@ export async function getStaticProps() {
   return {
     props: {
       universities,
+      collages,
       fellowships,
       scholarships,
       newsArticles,
@@ -42,6 +45,7 @@ export async function getStaticProps() {
 
 export default function Home({
   universities,
+  collages,
   fellowships,
   scholarships,
   newsArticles,
@@ -68,7 +72,13 @@ export default function Home({
         return <BlogPage blogs={blogs} />;
 
       default:
-        return <Versities versityList={universities} banners={banners} />;
+        return (
+          <Versities
+            versityList={universities}
+            banners={banners}
+            collages={collages}
+          />
+        );
     }
   };
 
