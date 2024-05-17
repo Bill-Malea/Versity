@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
-import { auth } from "@/firebaseconfig";
+import { auth } from "@/firebase.config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { router } from "next/router";
 const LoginPage = () => {

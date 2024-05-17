@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from "react";
-import { database } from "@/firebaseconfig";
+import { database } from "@/firebase.config";
 import { ref, onValue, push, set, update } from "firebase/database";
 import InputField from "../InputComponent";
 import UniversityItem from "./components/UniversityItem";

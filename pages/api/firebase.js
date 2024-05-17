@@ -1,5 +1,5 @@
 import { ref, get } from "firebase/database";
-import { database } from "@/firebaseconfig";
+import { database } from "@/firebase.config";
 
 // Fetch universities
 export const getUniversities = async () => {
