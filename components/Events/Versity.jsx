@@ -4,6 +4,7 @@ import VersityCard from "./components/VarsityCard";
 
 const Versities = ({ versityList, banners, collages }) => {
   const [searchTerm, setSearchTerm] = useState("");
+
   const [searchTermCol, setSearchTermCol] = useState("");
 
   const filteredVersities = versityList.filter((versity) => {
@@ -51,7 +52,7 @@ const Versities = ({ versityList, banners, collages }) => {
           type="text"
           placeholder="Search for a university"
           className="border border-gray-300 rounded-sm p-2 mb-4 w-full"
-          value={searchTerm}
+          value={searchTermCol}
           onChange={(e) => setSearchTermCol(e.target.value)}
         />
 

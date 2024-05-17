@@ -1,6 +1,4 @@
-// api/firebase.js
-
-import { onValue, ref, get } from "firebase/database";
+import { ref, get } from "firebase/database";
 import { database } from "@/firebaseconfig";
 
 // Fetch universities

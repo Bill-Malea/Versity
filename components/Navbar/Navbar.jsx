@@ -30,7 +30,7 @@ const NavBar = ({ onTabClick, activeTab }) => {
           {[
             "university",
             "fellowship",
-            "scholarship",
+            "scholarship & Opportunities",
             "events",
             "blog",
             "about",

@@ -64,7 +64,8 @@ export default function Home({
     switch (activeTab) {
       case "fellowship":
         return <FellowshipPage fellowships={fellowships} />;
-      case "scholarship":
+
+      case "scholarship & Opportunities":
         return <ScholarshipPage scholarships={scholarships} />;
       case "events":
         return <NewsPage newsArticles={newsArticles} />;

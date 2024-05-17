@@ -17,7 +17,7 @@ const UniversityTab = () => {
   const [uniId, setUniId] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [searchUniId, setSearchUniId] = useState("");
   useEffect(() => {
     // Fetch universities from Firebase
     const fetchUniversities = () => {
@@ -38,22 +38,6 @@ const UniversityTab = () => {
     const universityRef = push(ref(database, "universities"));
     await set(universityRef, universityData);
     return universityRef.key;
-  };
-
-  const addProgramsToUniversity = async (universityKey) => {
-    const programTypes = ["undergraduate", "masters", "phd"];
-
-    for (const type of programTypes) {
-      const programRef = push(
-        ref(database, `universities/${universityKey}/programs`)
-      );
-      const programData = {
-        type: type,
-        schools: {},
-      };
-
-      await set(programRef, programData);
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -132,7 +116,12 @@ const UniversityTab = () => {
   return (
     <div className="flex flex-col lg:flex-row">
       <div className="mr-10">
-        {/* University Form */}
+        <InputField
+          label={"Search University"}
+          type="text"
+          value={searchUniId}
+          onChange={(e) => setSearchUniId(e.target.value)}
+        />
         <h3 className="text-xl font-semibold mb-5">
           Add University and Program
         </h3>
@@ -178,7 +167,7 @@ const UniversityTab = () => {
         </form>
       </div>
 
-      {/* List of Existing Universities */}
+      {/* List of Existing Universities
       <div className="mt-10 lg:mt-0">
         <h3 className="text-xl font-semibold mb-5">Existing Universities</h3>
         <ul>
@@ -193,7 +182,7 @@ const UniversityTab = () => {
             />
           ))}
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 };
