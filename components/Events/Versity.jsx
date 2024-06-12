@@ -46,11 +46,11 @@ const Versities = ({ versityList, banners, collages }) => {
       </div>
 
       <div className="lg:ml-10 sm:ml mt-5">
-        <h2 className="text-2xl font-semibold lg:mb-4 sm:ml-4">Collages</h2>
+        <h2 className="text-2xl font-semibold lg:mb-4 sm:ml-4">Colleges</h2>
 
         <input
           type="text"
-          placeholder="Search for a university"
+          placeholder="Search for a college"
           className="border border-gray-300 rounded-sm p-2 mb-4 w-full"
           value={searchTermCol}
           onChange={(e) => setSearchTermCol(e.target.value)}

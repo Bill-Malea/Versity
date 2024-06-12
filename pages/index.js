@@ -3,6 +3,7 @@ import { router } from "next/router";
 import {
   FellowshipPage,
   BlogDescriptionPage,
+  AboutPage,
   BlogPage,
   ScholarshipPage,
   NavBar,
@@ -54,9 +55,6 @@ export default function Home({
 }) {
   const [activeTab, setActiveTab] = useState("university");
   const handleTabClick = (tab) => {
-    if (tab === "about") {
-      router.push("/about");
-    }
     setActiveTab(tab);
   };
 
@@ -71,6 +69,8 @@ export default function Home({
         return <NewsPage newsArticles={newsArticles} />;
       case "blog":
         return <BlogPage blogs={blogs} />;
+      case "about":
+        return <AboutPage blogs={blogs} />;
 
       default:
         return (

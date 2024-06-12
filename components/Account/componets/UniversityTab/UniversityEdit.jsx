@@ -7,7 +7,6 @@ import UniversityItem from "./components/UniversityItem";
 
 const UniversityTab = () => {
   const [universities, setUniversities] = useState([]);
-  // University details
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [imageLink, setImageLink] = useState("");
@@ -18,6 +17,7 @@ const UniversityTab = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [searchUniId, setSearchUniId] = useState("");
+  const [showUniversities, setShowUniversities] = useState(true);
   useEffect(() => {
     // Fetch universities from Firebase
     const fetchUniversities = () => {
@@ -33,6 +33,15 @@ const UniversityTab = () => {
     };
     fetchUniversities();
   }, []);
+
+  useEffect(() => {
+    if (searchUniId) {
+      const university = universities.find((uni) => uni.id === searchUniId);
+      if (university) {
+        onEditClick(university);
+      }
+    }
+  }, [searchUniId, universities]);
 
   const createUniversity = async (universityData) => {
     const universityRef = push(ref(database, "universities"));
@@ -104,6 +113,7 @@ const UniversityTab = () => {
       setLoading(false);
     }
   };
+
   const onEditClick = (university) => {
     setName(university.name);
     setLocation(university.location);
@@ -166,23 +176,33 @@ const UniversityTab = () => {
           </button>
         </form>
       </div>
-
-      {/* List of Existing Universities
-      <div className="mt-10 lg:mt-0">
-        <h3 className="text-xl font-semibold mb-5">Existing Universities</h3>
-        <ul>
-          {universities.map((university) => (
-            <UniversityItem
-              universityId={university.id}
-              imageLink={university.image}
-              key={university.id}
-              university={university}
-              onDeleteClick={() => onDeleteClick(university.id)}
-              onEditClick={() => onEditClick(university)}
-            />
-          ))}
-        </ul>
-      </div> */}
+      <div className="flex flex-col">
+        <button
+          className="text-sm transition h-12  duration-300 text-green-400 bg-black rounded-md px-5 py-2 mb-5"
+          onClick={() => setShowUniversities((prev) => !prev)}
+        >
+          {showUniversities ? "Hide" : "Show"} Existing Universities
+        </button>
+        {showUniversities && (
+          <>
+            <h3 className="text-xl font-semibold mb-5">
+              Existing Universities
+            </h3>
+            <ul>
+              {universities.map((university) => (
+                <UniversityItem
+                  universityId={university.id}
+                  imageLink={university.image}
+                  key={university.id}
+                  university={university}
+                  onDeleteClick={() => onDeleteClick(university.id)}
+                  onEditClick={() => onEditClick(university)}
+                />
+              ))}
+            </ul>
+          </>
+        )}
+      </div>
     </div>
   );
 };

@@ -12,6 +12,7 @@ import BannerTab from "./componets/BannerTab";
 import CreateUser from "./componets/UsersTab";
 import CollegeTab from "./componets/CollegesTab";
 const AccountPage = () => {
+  var user = auth.currentUser;
   const [subTab, setSubTab] = useState("university");
   const [loading, setLoading] = useState(false);
   const handleSubTabClick = (tab) => {
@@ -38,8 +39,7 @@ const AccountPage = () => {
         <div className="flex justify-between items-center text-black p-4 mb-5">
           <h2 className="lg:text-2xl font-semibold  flex-grow">Account Page</h2>
           <h2 className=" font-semibold  mx-4">
-            {" "}
-            Welcome, <span className="text-l ">Bill</span>
+            Welcome, <span className="text-l ">{user.email}</span>
           </h2>
 
           {loading ? (

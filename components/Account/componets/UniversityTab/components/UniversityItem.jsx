@@ -21,7 +21,7 @@ const UniversityItem = ({
           <img
             src={imageLink}
             alt={`${name} Logo`}
-            className="w-16 h-16 rounded-full"
+            className="w-16 h-16 rounded-full object-contain "
           />
           <div>
             <h4 className="font-semibold">{name}</h4>

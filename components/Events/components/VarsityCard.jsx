@@ -10,7 +10,7 @@ const VersityCard = ({ versity, isCollage }) => {
         <img
           src={versity.image}
           alt={versity.title}
-          className="sm:w-auto lg:w-64 h-36 object-cover mb-4 rounded-md"
+          className="sm:w-auto lg:w-64 h-36 object-contain mb-4 rounded-md"
         />
         <h3 className="text-sm font-semibold mb-2">{versity.name}</h3>
         <div className="flex items-center mb-2">

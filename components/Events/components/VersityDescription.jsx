@@ -2,25 +2,13 @@
 import React, { useState } from "react";
 
 const VersityDetails = ({ versity }) => {
-  const [selectedSchool, setSelectedSchool] = useState("");
-  const [selectedDepartment, setSelectedDepartment] = useState("");
-  const [selectedCourse, setSelectedCourse] = useState(null);
-
-  const handleDownload = () => {
-    console.log("Download Action:", {
-      selectedSchool,
-      selectedDepartment,
-      selectedCourse,
-    });
-  };
-
   return (
-    <div className="lg:ml-36 mx-5 my-10">
+    <div className="lg:ml-36 px-20 py-10">
       <div className="flex flex-col w-full lg:flex-row">
         <img
           src={versity.image}
           alt={versity.name}
-          className="w-full h-64 object-cover mb-4 rounded-md lg:w-1/2 lg:mr-10"
+          className="w-full h-64 object-contain mb-4 rounded-md lg:w-1/2 lg:mr-10"
         />
 
         <div className="lg:w-1/2">

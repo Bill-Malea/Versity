@@ -5,45 +5,54 @@ import { ref, onValue, push, set, update } from "firebase/database";
 import InputField from "./InputComponent";
 import UniversityItem from "./UniversityTab/components/UniversityItem";
 
-const CollegeTab = () => {
-  const [collages, setCollages] = useState([]);
-  // University details
+const CollegesTab = () => {
+  const [colleges, setColleges] = useState([]);
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [imageLink, setImageLink] = useState("");
 
-  const [collageLink, setCollageLink] = useState("");
+  const [collegeLink, setCollegeLink] = useState("");
   const [description, setDescription] = useState("");
-  const [uniId, setUniId] = useState(null);
+  const [colId, setColId] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [searchColId, setSerachColId] = useState("");
+  const [showCollages, setShowCollages] = useState(true);
   useEffect(() => {
-    // Fetch collages from Firebase
-    const fetchUniversities = () => {
-      const universitiesRef = ref(database, "collages/");
-      onValue(universitiesRef, (snapshot) => {
+    // Fetch colleges from Firebase
+    const fetchCollages = () => {
+      const collegesRef = ref(database, "colleges/");
+      onValue(collegesRef, (snapshot) => {
         const data = snapshot.val();
-        setCollages(
+        setColleges(
           data
             ? Object.entries(data).map(([id, value]) => ({ id, ...value }))
             : []
         );
       });
     };
-    fetchUniversities();
+    fetchCollages();
   }, []);
 
-  const createCollage = async (collageData) => {
-    const universityRef = push(ref(database, "collages"));
-    await set(universityRef, collageData);
+  useEffect(() => {
+    if (searchColId) {
+      const university = colleges.find((uni) => uni.id === searchColId);
+      if (university) {
+        onEditClick(university);
+      }
+    }
+  }, [searchColId, colleges]);
+
+  const createUniversity = async (universityData) => {
+    const universityRef = push(ref(database, "colleges"));
+    await set(universityRef, universityData);
     return universityRef.key;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !location || !imageLink || !description || !collageLink) {
+    if (!name || !location || !imageLink || !description) {
       setError("Please fill in all fields.");
       return;
     }
@@ -51,31 +60,33 @@ const CollegeTab = () => {
     try {
       setLoading(true);
 
-      const collagedata = {
+      const universitydata = {
         name: name,
         location: location,
         image: imageLink,
-        description,
-        collageLink: collageLink,
+        description: description,
+        uniLink: collegeLink,
       };
 
-      if (uniId) {
-        const universityRef = ref(database, `collages/${uniId}`);
+      /// update uni
+      if (colId) {
+        const universityRef = ref(database, `colleges/${colId}`);
 
-        await update(universityRef, collagedata);
+        await update(universityRef, universitydata);
       } else {
-        await createCollage(collagedata);
+        // create a uni
+        await createUniversity(universitydata);
       }
 
       setName("");
       setLocation("");
       setImageLink("");
       setDescription("");
-      setUniId(null);
+      setCollegeLink("");
+      setColId(null);
       setError("");
-      setCollageLink("");
     } catch (error) {
-      setError("Error submitting collage: " + error.message);
+      setError("Error submitting university: " + error.message);
     } finally {
       setLoading(false);
     }
@@ -85,41 +96,45 @@ const CollegeTab = () => {
     try {
       setLoading(true);
 
-      await set(ref(database, "collages/" + universityId), null);
-
-      setCollages(collages.filter((uni) => uni.id !== universityId));
-
+      // Delete the university
+      await set(ref(database, "colleges/" + universityId), null);
       setName("");
       setLocation("");
       setImageLink("");
       setDescription("");
-      setUniId(null);
+      setCollegeLink("");
+      setColId(null);
       setError("");
-      setCollageLink("");
+      // Update the local state to reflect the deletion
+      setColleges(colleges.filter((uni) => uni.id !== universityId));
     } catch (error) {
-      setError("Error deleting collage: " + error.message);
+      setError("Error deleting university: " + error.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const onEditClick = (collage) => {
-    setName(collage.name);
-    setLocation(collage.location);
-    setImageLink(collage.image);
-    setDescription(collage.description);
-    setCollageLink(collage.collageLink);
-    setUniId(collage.id);
-  };
+  const onEditClick = (university) => {
+    setName(university.name);
+    setLocation(university.location);
+    setImageLink(university.image);
+    setDescription(university.description);
+    setCollegeLink(university.uniLink);
 
+    setColId(university.id);
+  };
   return (
     <div className="flex flex-col lg:flex-row">
       <div className="mr-10">
-        {/* University Form */}
-        <h3 className="text-xl font-semibold mb-5">Add Collage</h3>
+        <InputField
+          label={"Search College"}
+          type="text"
+          value={searchColId}
+          onChange={(e) => setSerachColId(e.target.value)}
+        />
+        <h3 className="text-xl font-semibold mb-5">Add College and Program</h3>
         {error && <div className="text-red-500 mb-4">{error}</div>}
         <form onSubmit={handleSubmit}>
-          {/* University Fields */}
           <InputField
             label="Name"
             value={name}
@@ -137,9 +152,9 @@ const CollegeTab = () => {
           />
 
           <InputField
-            label="Collage Link"
-            value={collageLink}
-            onChange={(e) => setCollageLink(e.target.value)}
+            label="College Link"
+            value={collegeLink}
+            onChange={(e) => setCollegeLink(e.target.value)}
           />
           <InputField
             type={"textarea"}
@@ -154,29 +169,37 @@ const CollegeTab = () => {
             disabled={loading}
             onClick={handleSubmit}
           >
-            {uniId == null ? "Add Collage" : "Update Collage"}
+            {colId == null ? "Add University" : "Update University"}
           </button>
         </form>
       </div>
-
-      {/* List of Existing Universities */}
-      <div className="mt-10 lg:mt-0">
-        <h3 className="text-xl font-semibold mb-5">Existing Collages</h3>
-        <ul>
-          {collages.map((collage) => (
-            <UniversityItem
-              universityId={collage.id}
-              imageLink={collage.image}
-              key={collage.id}
-              collage={collage}
-              onDeleteClick={() => onDeleteClick(collage.id)}
-              onEditClick={() => onEditClick(collage)}
-            />
-          ))}
-        </ul>
+      <div className="flex flex-col">
+        <button
+          className="text-sm transition h-12  duration-300 text-green-400 bg-black rounded-md px-5 py-2 mb-5"
+          onClick={() => setShowCollages((prev) => !prev)}
+        >
+          {showCollages ? "Hide" : "Show"} Existing Colleges
+        </button>
+        {showCollages && (
+          <>
+            <h3 className="text-xl font-semibold mb-5">Existing Colleges</h3>
+            <ul>
+              {colleges.map((university) => (
+                <UniversityItem
+                  universityId={university.id}
+                  imageLink={university.image}
+                  key={university.id}
+                  university={university}
+                  onDeleteClick={() => onDeleteClick(university.id)}
+                  onEditClick={() => onEditClick(university)}
+                />
+              ))}
+            </ul>
+          </>
+        )}
       </div>
     </div>
   );
 };
 
-export default CollegeTab;
+export default CollegesTab;

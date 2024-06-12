@@ -3,7 +3,7 @@ import React from "react";
 const DataItem = ({ title, image, content, onEditClick, onDeleteClick }) => {
   return (
     <div className="flex items-center justify-between border-b border-gray-300 py-3">
-      <div className=" lg:w-96">
+      <div className=" lg:w-96 h-72 overflow-clip">
         <h4 className="text-lg font-semibold">{title}</h4>
         <p className="text-gray-500 ">{content}</p>
         <p className="text-gray-500">{image}</p>
