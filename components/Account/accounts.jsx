@@ -38,9 +38,11 @@ const AccountPage = () => {
       <div className="container mx-auto p-4">
         <div className="flex justify-between items-center text-black p-4 mb-5">
           <h2 className="lg:text-2xl font-semibold  flex-grow">Account Page</h2>
-          <h2 className=" font-semibold  mx-4">
-            Welcome, <span className="text-l ">{user.email}</span>
-          </h2>
+          {user && (
+            <h2 className=" font-semibold  mx-4">
+              Welcome, <span className="text-l ">{user.email}</span>
+            </h2>
+          )}
 
           {loading ? (
             <div>
