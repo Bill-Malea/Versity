@@ -34,7 +34,7 @@ const AccountPage = () => {
   };
 
   return (
-    <div className="bg-white text-black h-screen">
+    <div className="bg-white text-black ">
       <div className="container mx-auto p-4">
         <div className="flex justify-between items-center text-black p-4 mb-5">
           <h2 className="lg:text-2xl font-semibold  flex-grow">Account Page</h2>

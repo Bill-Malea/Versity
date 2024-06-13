@@ -4,16 +4,22 @@ import { database } from "@/firebase.config";
 import InputField from "./InputComponent";
 import { ref, onValue, set, push } from "firebase/database";
 import DataItem from "./DataItem";
+import QuillEditor from "./QuilEditor";
+import Datepiker from "./Datepicker";
 const ScholarshipTab = () => {
   const [scholarships, setScholarships] = useState([]);
-  const [title, setTitle] = useState("");
-  const [image, setImage] = useState("");
-  const [content, setContent] = useState("");
-  const [scholarshipUrl, setScholarshipUrl] = useState("");
   const [error, setError] = useState("");
   const [editingScholarshipId, setEditingFellowshipId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [searchScholarshipId, setSearchScholarshipId] = useState("");
+
+  const [form, setForm] = useState({
+    title: "",
+    image: "",
+    content: "",
+    scholarshipUrl: "",
+    deadline: null,
+  });
   useEffect(() => {
     // Fetch existing scholarships from Firebase Realtime Database
     const fetchScholarships = () => {
@@ -45,10 +51,13 @@ const ScholarshipTab = () => {
 
   const handleEditClick = (scholarship) => {
     setEditingFellowshipId(scholarship.id);
-    setTitle(scholarship.title || "");
-    setImage(scholarship.image || "");
-    setContent(scholarship.content || "");
-    setScholarshipUrl(scholarship.scholarshipUrl || "");
+    setForm({
+      title: scholarship.title,
+      image: scholarship.image,
+      content: scholarship.content,
+      scholarshipUrl: scholarship.scholarshipUrl,
+      deadline: new Date(scholarship.deadline),
+    });
   };
 
   const handleDeleteClick = async (id) => {
@@ -67,18 +76,32 @@ const ScholarshipTab = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const { title, image, content, scholarshipUrl, deadline } = form;
+    console.log(
+      title,
+      "======TITLE===",
+      image,
+      "======IMAGE========",
+      content,
+      "=======CONTENT=====",
+      scholarshipUrl,
+      "=======SCHOLARSHIP====",
+      deadline,
+      "============DEADLINE"
+    );
     if (!title || !image || !content || !scholarshipUrl) {
       setError("Please fill in all fields.");
       return;
     }
     const dbref = ref(database, "scholarships/");
+
     try {
       const data = {
         title,
         image,
         content,
         scholarshipUrl,
+        deadline: deadline.toISOString(),
       };
       setLoading(true);
       if (editingScholarshipId) {
@@ -90,17 +113,32 @@ const ScholarshipTab = () => {
         // If adding a new scholarship, push a new document
         await push(dbref, data);
       }
-
-      setTitle("");
-      setImage("");
-      setContent("");
-      setScholarshipUrl("");
+      setForm({
+        title: "",
+        image: "",
+        content: "",
+        scholarshipUrl: "",
+        deadline: null,
+      });
       setLoading(false);
     } catch (error) {
       console.error("Error submitting scholarship:", error);
       setError(error);
       setLoading(false);
     }
+  };
+
+  const handleContentChange = (content) => {
+    setForm((prevForm) => ({ ...prevForm, content }));
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prevForm) => ({ ...prevForm, [name]: value }));
+  };
+
+  const handleDateChange = (date) => {
+    setForm((prevForm) => ({ ...prevForm, deadline: date }));
   };
 
   return (
@@ -120,30 +158,42 @@ const ScholarshipTab = () => {
         {/* Scholarship Form */}
         <form onSubmit={handleSubmit}>
           <InputField
-            label="Title"
+            label={"Title"}
             type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            name="title"
+            value={form.title}
+            onChange={handleChange}
           />
           <InputField
-            label="Image Link"
+            label={"ImageLink"}
             type="text"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
+            name="image"
+            value={form.image}
+            onChange={handleChange}
           />
+          <div className="mb-12">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="content"
+            >
+              Content
+            </label>
+            <QuillEditor value={form.content} onChange={handleContentChange} />
+          </div>
           <InputField
-            label="Content"
-            type="textarea"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-          <InputField
-            label="Scholarship URL"
+            label={"Scholarship Url"}
             type="text"
-            value={scholarshipUrl}
-            onChange={(e) => setScholarshipUrl(e.target.value)}
+            name="scholarshipUrl"
+            value={form.scholarshipUrl}
+            onChange={handleChange}
           />
 
+          <div className="mb-4">
+            <Datepiker
+              handleDateChange={handleDateChange}
+              selecteddate={form.deadline}
+            />
+          </div>
           {loading ? (
             <div>
               <img

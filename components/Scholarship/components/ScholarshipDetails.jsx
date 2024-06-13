@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
-import Link from "next/link";
+import { format } from "date-fns";
 const ScholarshipDetails = ({ scholarship }) => {
   return (
     <div className="lg:mx-40 mx-5 my-5">
@@ -11,13 +11,20 @@ const ScholarshipDetails = ({ scholarship }) => {
         className="w-full  lg:h-80 h-48 object-cover mb-4 rounded-md"
       />
       <div className="mt-8">
+        <div className="flex flex-row mb-5">
+          <h2 className="text-l font-semibold mr-5 flex-1">
+            Deadline: {format(scholarship.deadline, "PP")}
+          </h2>
+          <button
+            onClick={() => window.open(scholarship.scholarshipUrl, "_blank")}
+            className="bg-black border-gray-300 text-green-500 px-8 py-1 rounded-md  cursor-pointer"
+          >
+            Visit
+          </button>
+        </div>
         <h2 className="text-2xl font-bold mb-4">Description</h2>
         <div dangerouslySetInnerHTML={{ __html: scholarship.content }} />
       </div>
-
-      <button className="bg-black border-gray-300 text-green-500 px-8 py-1 rounded-md mt-5 cursor-pointer">
-        Visit
-      </button>
     </div>
   );
 };

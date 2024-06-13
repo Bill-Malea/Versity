@@ -13,13 +13,6 @@ const ScholarshipCard = ({ scholarship }) => {
         <div>
           <h3 className="text-md font-semibold mb-2">{scholarship.title}</h3>
           <p className="text-gray-800">{scholarship.description}</p>
-          <button
-            key={scholarship.image}
-            className={`relative  text-sm transition duration-300 text-green-400 bg-black   rounded-md px-7 py-1 mt-5`}
-            onClick={null}
-          >
-            Visit
-          </button>
         </div>
       </div>
     </Link>

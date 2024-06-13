@@ -10,7 +10,7 @@ const UniversityTab = () => {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [imageLink, setImageLink] = useState("");
-
+  const [bestCourse, setBestCourse] = useState("");
   const [universityLink, setUniversityLink] = useState("");
   const [description, setDescription] = useState("");
   const [uniId, setUniId] = useState(null);
@@ -52,7 +52,7 @@ const UniversityTab = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !location || !imageLink || !description) {
+    if (!name || !location || !imageLink || !description || !bestCourse) {
       setError("Please fill in all fields.");
       return;
     }
@@ -66,6 +66,7 @@ const UniversityTab = () => {
         image: imageLink,
         description: description,
         uniLink: universityLink,
+        bestCourse: bestCourse,
       };
 
       /// update uni
@@ -104,6 +105,7 @@ const UniversityTab = () => {
       setDescription("");
       setUniversityLink("");
       setUniId(null);
+      setBestCourse("");
       setError("");
       // Update the local state to reflect the deletion
       setUniversities(universities.filter((uni) => uni.id !== universityId));
@@ -120,7 +122,7 @@ const UniversityTab = () => {
     setImageLink(university.image);
     setDescription(university.description);
     setUniversityLink(university.uniLink);
-
+    setBestCourse(university.bestCourse);
     setUniId(university.id);
   };
   return (
@@ -158,6 +160,11 @@ const UniversityTab = () => {
             label="University Link"
             value={universityLink}
             onChange={(e) => setUniversityLink(e.target.value)}
+          />
+          <InputField
+            label="Best Course"
+            value={bestCourse}
+            onChange={(e) => setBestCourse(e.target.value)}
           />
           <InputField
             type={"textarea"}

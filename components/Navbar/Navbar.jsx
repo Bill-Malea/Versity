@@ -21,7 +21,7 @@ const NavBar = ({ onTabClick, activeTab }) => {
           </div>
 
           <Link href={"/"}>
-            <span className="text-2xl font-semibold">Your Logo</span>
+            <span className="text-xl font-semibold"></span>
           </Link>
         </div>
 
@@ -30,8 +30,8 @@ const NavBar = ({ onTabClick, activeTab }) => {
           {[
             "university",
             "fellowship",
-            "scholarship & Opportunities",
             "events",
+            "scholarship & Opportunities",
             "blog",
             "about",
           ].map((tab) => (

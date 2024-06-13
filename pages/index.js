@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { router } from "next/router";
 import {
   FellowshipPage,
-  BlogDescriptionPage,
   AboutPage,
   BlogPage,
   ScholarshipPage,
@@ -86,7 +84,9 @@ export default function Home({
   return (
     <main className={`flex min-h-screen flex-col`}>
       <NavBar onTabClick={handleTabClick} activeTab={activeTab} />
-      <div className="mb-56 lg:px-8 sm:px-2 py-20 ">{renderContent()}</div>
+      <div className="mb-56 lg:px-8  p-3 mt-5 sm:mt-30  py-20 ">
+        {renderContent()}
+      </div>
       <Footer />
     </main>
   );

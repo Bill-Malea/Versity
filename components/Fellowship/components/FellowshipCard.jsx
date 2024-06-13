@@ -8,7 +8,7 @@ const FellowshipCard = ({ fellowship }) => {
         <img
           src={fellowship.image}
           alt={fellowship.title}
-          className="w-full h-36 object-cover mb-4 rounded-t-md"
+          className="w-full h-36 object-contain mb-4 rounded-t-md"
         />
         <div>
           <h3 className="text-lg font-semibold mb-2">{fellowship.title}</h3>
