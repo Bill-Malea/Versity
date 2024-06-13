@@ -13,7 +13,6 @@ const FellowshipDetails = ({ fellowship }) => {
         className="w-full lg:h-80 h-48 object-cover mb-4 rounded-md"
       />
       <div className="mt-8">
-        <h2 className="text-2xl font-semibold mb-4">Description</h2>
         <div className="flex flex-row mb-5">
           <h2 className="text-l font-semibold mr-5 flex-1">
             Deadline: {format(fellowship.deadline, "PP")}

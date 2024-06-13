@@ -1,6 +1,6 @@
 import React from "react";
 
-const InputField = ({ label, type, value, onChange, options }) => {
+const InputField = ({ label, type, value, onChange, options, name }) => {
   const isTextarea = type === "textarea";
   const isSelect = type === "select";
 
@@ -32,6 +32,7 @@ const InputField = ({ label, type, value, onChange, options }) => {
           value={value}
           onChange={onChange}
           className="w-96 p-2 border border-gray-300 rounded-md"
+          name={name}
         />
       )}
     </div>

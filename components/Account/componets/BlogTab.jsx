@@ -4,16 +4,19 @@ import { database } from "@/firebase.config";
 import InputField from "./InputComponent";
 import { ref, onValue, push, set } from "firebase/database";
 import DataItem from "./DataItem";
+import QuillEditor from "./QuilEditor";
 const BlogTab = () => {
   const [blogs, setBlogs] = useState([]);
-  const [title, setTitle] = useState("");
-  const [image, setImage] = useState("");
-  const [content, setContent] = useState("");
-  const [blogUrl, setBlogUrl] = useState("");
   const [error, setError] = useState("");
   const [editingBlogId, setEditingBlogId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [searchBlogId, setSearchBlogId] = useState("");
+  const [form, setForm] = useState({
+    title: "",
+    image: "",
+    content: "",
+    blogUrl: "",
+  });
 
   useEffect(() => {
     const fetchBlogs = () => {
@@ -40,10 +43,13 @@ const BlogTab = () => {
 
   const handleEditClick = (blog) => {
     setEditingBlogId(blog.id);
-    setTitle(blog.title || "");
-    setImage(blog.image || "");
-    setContent(blog.content || "");
-    setBlogUrl(blog.blogUrl || "");
+
+    setForm({
+      title: blog.title,
+      image: blog.image,
+      content: blog.content,
+      blogUrl: blog.blogUrl,
+    });
   };
 
   const handleDeleteClick = async (id) => {
@@ -59,6 +65,7 @@ const BlogTab = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const { title, image, content, blogUrl } = form;
 
     if (!title || !image || !content || !blogUrl) {
       setError("Please fill in all fields.");
@@ -66,6 +73,7 @@ const BlogTab = () => {
     }
 
     const blogsRef = ref(database, "blogs/");
+
     try {
       const data = {
         title,
@@ -84,15 +92,26 @@ const BlogTab = () => {
         await push(blogsRef, data);
       }
 
-      setTitle("");
-      setImage("");
-      setContent("");
-      setBlogUrl("");
+      setForm({
+        title: "",
+        image: "",
+        content: "",
+        blogUrlUrl: "",
+      });
       setLoading(false);
     } catch (error) {
       setError(error);
       setLoading(false);
     }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prevForm) => ({ ...prevForm, [name]: value }));
+  };
+
+  const handleContentChange = (content) => {
+    setForm((prevForm) => ({ ...prevForm, content }));
   };
 
   return (
@@ -103,7 +122,7 @@ const BlogTab = () => {
           label={"Search Blog"}
           type="text"
           value={searchBlogId}
-          onChange={(e) => setSearchBlogId(e.target.value)}
+          onChange={handleChange}
         />
         <h3 className="text-lg font-semibold mb-5">Add Blog</h3>
         {error && <div className="text-red-500 mb-4 mt-7">{error}</div>}
@@ -112,26 +131,26 @@ const BlogTab = () => {
           <InputField
             label="Title"
             type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            name="title"
+            value={form.title}
+            onChange={handleChange}
           />
           <InputField
             label="Image Link"
             type="text"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
+            name="image"
+            value={form.image}
+            onChange={handleChange}
           />
-          <InputField
-            label="Content"
-            type="textarea"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+
+          <QuillEditor value={form.content} onChange={handleContentChange} />
+
           <InputField
             label="Blog URL"
             type="text"
-            value={blogUrl}
-            onChange={(e) => setBlogUrl(e.target.value)}
+            name="blogUrl"
+            value={form.blogUrl}
+            onChange={handleChange}
           />
 
           {loading ? (

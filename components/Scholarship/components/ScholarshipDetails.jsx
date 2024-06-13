@@ -22,7 +22,7 @@ const ScholarshipDetails = ({ scholarship }) => {
             Visit
           </button>
         </div>
-        <h2 className="text-2xl font-bold mb-4">Description</h2>
+
         <div dangerouslySetInnerHTML={{ __html: scholarship.content }} />
       </div>
     </div>

@@ -75,7 +75,7 @@ const AccountPage = () => {
             <div className="mb-4 flex sm:flex-row lg:flex-col text-left">
               {[
                 "university",
-                "collages",
+                "colleges",
                 "fellowship",
                 "scholarship",
                 "events",
@@ -100,7 +100,7 @@ const AccountPage = () => {
           </div>
           <div className="w-full lg:w-3/4 ">
             {subTab === "university" && <UniversityTab />}
-            {subTab === "collages" && <CollegeTab />}
+            {subTab === "colleges" && <CollegeTab />}
             {subTab === "fellowship" && <FellowshipTab />}
             {subTab === "scholarship" && <ScholarshipTab />}
             {subTab === "events" && <NewsTab />}

@@ -11,7 +11,7 @@ const QuillEditor = ({ value, onChange }) => {
       onChange={onChange}
       modules={{
         toolbar: [
-          [({ header: "1" }, { header: "2" }, { font: [] })],
+          [{ header: "1" }, { header: "2" }, { font: ["Roboto"] }],
           [{ list: "ordered" }, { list: "bullet" }],
           ["bold", "italic", "underline"],
           ["link"],

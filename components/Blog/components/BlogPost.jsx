@@ -12,9 +12,10 @@ const BlogPost = ({ post }) => (
       />
       <div className="h-36 overflow-hidden">
         <h3 className="text-md font-semibold mb-2">{post.title}</h3>
-        <p className="text-gray-800 overflow-hidden line-clamp-3">
-          {post.content}
-        </p>
+        <div
+          className="text-gray-800 overflow-hidden line-clamp-3"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
       </div>
     </div>
   </Link>
