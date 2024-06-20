@@ -38,7 +38,7 @@ export async function getStaticProps() {
       blogs,
       banners,
     },
-    revalidate: 60 * 60, // Re-generate every 1 hour
+    revalidate: 60 * 60,
   };
 }
 
